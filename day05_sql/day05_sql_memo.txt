@@ -1,0 +1,70 @@
+---------------------20230327----------------------
+
+LEFT JOIN
+	한쪽에 값이 없을때 NULL 을 띄운다.
+	양쪽의 값이 다를때 사용함.
+
+DECODE
+	-- DECODE ( IF 문과 같음 ) 
+	-- 값이 해당이 되면 DECODE 컬럼에 추가해서 출력시켜준다.
+
+	SELECT STU_NAME, DECODE (STU_GENDER, 'M','남자','F','여자','기타') AS 성별      -- M, F 가 없으면 기타를 출력한다는 뜻
+	FROM STUDENT
+	;
+
+
+CASE WHEN
+	-- CASE WHEN ( SWITCH CAS 와 IF 문 섞은 느낌 )      이 친구 많이 쓰임 DECODE 보다
+	-- CASE WHEN 조건  THEN 결과 (ELSE) ~~ END
+	SELECT CASE WHEN STU_GENDER = 'M' THEN '남자'
+				WHEN STU_GENDER = 'F' THEN '여자' 
+				ELSE '몰라'       -- 생략가능
+				END AS GENDER   -- 성별      -- 한글 변수를 쓰면 오류 날수있으니 영어로 쓰자
+				, STU_NAME
+	FROM STUDENT
+	;
+
+HAVING
+	-- GROUP BY 그룹함수에 WHERE 을 (조건을) 줄수없다
+	-- HAVING 으로 주면 가능하다 ! 개꿀 !
+	-- HAVING 조건문  =  WHERE 조건문 
+
+	SELECT COUNT(*) , DEPTNO 
+	FROM EMP
+	GROUP BY DEPTNO
+	HAVING COUNT(*) > 4
+	;
+	
+WHERE  (컬럼1 , 컬럼2) IN ( 
+						SELECT 컬럼1,2 문
+						)
+
+TO_CHAR
+	-- 특정요소들을 문자로 바꾸는 TO_CHAR !
+	-- 1번 20230327
+	-- 2번 2023/03/27
+	-- 3번 2023-03-27
+	-- 4번 2023-03-27 05:21:01 (현재시간)
+	-- 5번 2023-03-27 17:21:01 (현재시간)
+	-- SYSDATE 는 현재시간 출력해주는 함수
+	-- 현재시간을 문자열로 출력함
+	-- Y M D 로 구분시켜준다
+
+	SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS "1번"            
+			,TO_CHAR(SYSDATE, 'YYYY/MM/DD') "2번"
+			,TO_CHAR(SYSDATE, 'YYYY-MM-DD') "3번"
+			,TO_CHAR(SYSDATE, 'YYYY-MM-DD HH:MI:SS') "4번"       -- 분은 MM 이아니고 MI
+			,TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') "5번"   
+	FROM DUAL
+	;
+	
+* 자주 쓰이는 TO_CHAR 날짜시간 표시 *
+	
+	SELECT TO_CHAR(SYSDATE, 'AM')       --오전이냐 오후냐 출력
+      ,TO_CHAR(SYSDATE, 'D')        --1(일요일) ~ 7(토요일)
+      ,TO_CHAR(SYSDATE, 'DY')       -- 월 표시
+      ,TO_CHAR(SYSDATE, 'DAY')      -- 몇요일인지
+      ,TO_CHAR(SYSDATE, 'DDD')      --365일기준
+      ,TO_CHAR(SYSDATE, 'WW')       --1년기준 몇주 지났는지
+      ,TO_CHAR(SYSDATE, 'MON')      --몇월인지
+	FROM DUAL;
